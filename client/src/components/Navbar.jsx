@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { assets } from "../assets/assets";
-import { useState } from "react";
+import { useContext} from "react";
+import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
-  const [user, setUser] = useState(false);
+  const {user} = useContext(AppContext)
   return (
     <div className='flex items-center justify-between py-4'>
       <Link to='/'>
@@ -41,7 +42,7 @@ const Navbar = () => {
                   alt='profile icon'
                 />
                 <Link
-                  className='absolute hidde group-hover:block top-0 right-0 z-10 text-black rounded mt-14 shadow-red-600 font-medium shadow-sm p-2'
+                  className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded mt-10 py-4 border-b-2 border-red-600 font-medium  p-2'
                   to='/'
                 >
                   Logout
