@@ -4,7 +4,7 @@ import { useContext} from "react";
 import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
-  const {user} = useContext(AppContext)
+  const {user,setModal} = useContext(AppContext)
   return (
     <div className='flex items-center justify-between py-4'>
       <Link to='/'>
@@ -15,12 +15,12 @@ const Navbar = () => {
         />
       </Link>
       <div>
-        {user ? (
+        {!user ? (
           <div className='flex items-center gap-2 sm:gap-5'>
             <Link to='/buy' className='cursor-pointer block'>
               Pricing
             </Link>
-            <button className='bg-zinc-800 text-white px-7 py-2 sm:px-10 text-sm rounded-full'>
+            <button onClick={()=>setModal(true)} className='bg-zinc-800 text-white px-7 py-2 sm:px-10 text-sm rounded-full'>
               Login
             </button>
           </div>

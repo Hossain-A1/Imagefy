@@ -5,9 +5,18 @@ const Result = () => {
   const [image, setImage] = useState(assets.sample_img_1);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [loadig, setLoading] = useState(false);
+  const [value, setValue] = useState("");
+
+  const handleGenImage = async()=>{
+try {
+  
+} catch (error) {
+  
+}
+  }
 
   return (
-    <form className='flex flex-col min-h-[90vh] justify-center items-center gap-5'>
+    <form onSubmit={handleGenImage} className='flex flex-col min-h-[90vh] justify-center items-center gap-5'>
       <div>
         <div className='relative'>
           <img
@@ -29,6 +38,7 @@ const Result = () => {
       {!isImageLoaded && (
         <div className='flex w-full max-w-xl bg-neutral-500 text-white rounded-full '>
           <input
+            onChange={(e) => setValue(e.target.value)}
             type='text'
             placeholder='Descripe what you want to generate'
             className='flex-1 bg-transparent outline-none ml-8 max-sm:w-20'
