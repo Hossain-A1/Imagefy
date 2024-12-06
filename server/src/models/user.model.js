@@ -14,7 +14,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  creditbalance: {
+  creditBalance: {
     type: Number,
     default: 5,
   },

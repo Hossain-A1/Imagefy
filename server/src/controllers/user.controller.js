@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import userModel from "../models/user.model.js";
 
 import { errorResponse, successResponse } from "./response.controller.js";
-import creeateJwtToken from "../helpers/createJwtToken.js";
+import { creeateJwtToken } from "../helpers/createJwtToken.js";
 
 const handleRegister = async (req, res, next) => {
   try {
@@ -42,7 +42,7 @@ const handleRegister = async (req, res, next) => {
     return successResponse(res, {
       statusCode: 201,
       message: "User was created successfully!",
-      payload: token,
+      payload: { token, name: user.name },
     });
   } catch (error) {
     next(error);
@@ -83,13 +83,32 @@ const handleLogin = async (req, res, next) => {
     const token = creeateJwtToken(user._id);
 
     return successResponse(res, {
-      statusCode: 201,
+      statusCode: 200,
       message: "User was login successfully!",
-      payload: token,
+      payload: { token, name: user.name },
     });
   } catch (error) {
     next(error);
   }
 };
 
-export { handleRegister };
+const handleUserCredits = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+
+    const user = await userModel.findById(id);
+
+    if (!user) {
+      return errorResponse(res, { statusCode: 404, message: "User not found" });
+    }
+
+    return successResponse(res, {
+      statusCode: 200,
+      message: "User credits was returned successfully!",
+      payload: user.creditBalance,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export { handleRegister, handleLogin, handleUserCredits };
