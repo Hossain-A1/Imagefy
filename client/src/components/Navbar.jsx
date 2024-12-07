@@ -4,7 +4,7 @@ import { useContext} from "react";
 import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
-  const {user,setModal} = useContext(AppContext)
+  const {user,setModal,credit,logout} = useContext(AppContext)
   return (
     <div className='flex items-center justify-between py-4'>
       <Link to='/'>
@@ -28,13 +28,13 @@ const Navbar = () => {
           <div className='flex items-center justify-center gap-5'>
             <div className='flex gap-1 items-center px-4 py-[0.7rem] rounded-full bg-slate-300 text-black font-medium  cursor-pointer hover:scale-105 transition-all duration-700'>
               <img className='w-4' src={assets.credit_star} alt='star icon' />
-              <p className='text-xs sm:text-sm font-medium text-gray-600'>
+              <Link to='/buy' className='text-xs block sm:text-sm font-medium text-gray-600'>
                 Credits left:{" "}
-                <span className='text-blue-600 font-extrabold'>5</span>
-              </p>
+                <span className='text-blue-600 font-extrabold'>{credit}</span>
+              </Link>
             </div>
             <div className='flex items-center justify-center gap-2'>
-              <h1 className='text-gray-600 max-sm:hidden pl-4'>Hi! Hossain</h1>
+              <h1 className='text-gray-600 max-sm:hidden pl-4'>Hi! {user}</h1>
               <div className='relative group'>
                 <img
                   className='w-10'
@@ -42,6 +42,7 @@ const Navbar = () => {
                   alt='profile icon'
                 />
                 <Link
+                onClick={logout}
                   className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded mt-10 py-4 border-b-2 border-red-600 font-medium  p-2'
                   to='/'
                 >

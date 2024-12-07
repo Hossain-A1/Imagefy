@@ -13,7 +13,7 @@ const BuyCredit = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >
-      <button className='border border-gray-400 px-10 py-2 sm:mb-10'>
+      <button className='border border-gray-400 px-10 py-2 rounded-full sm:mb-10'>
         Our Plans
       </button>
       <h1 className='text-center text-3xl font-medium mb-6 sm:mb-10'>

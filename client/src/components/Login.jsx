@@ -1,11 +1,46 @@
 import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { motion } from "motion/react";
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 
 const Login = () => {
+  const { backendUrl, setModal, setToken, setUser } = useContext(AppContext);
+
   const [state, setState] = useState("Login");
 
-  const { setModal } = useContext(AppContext);
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleGetStarted = async (e) => {
+    e.preventDefault();
+    try {
+      let newUrl = backendUrl;
+
+      if (state === "Login") {
+        newUrl += "/api/user/login";
+      } else {
+        newUrl += "/api/user/register";
+      }
+
+      const { data: res } = await axios.post(newUrl, data);
+
+      if (res.success) {
+        setToken(res.payload.token);
+        setUser(res.payload.name);
+        localStorage.setItem("token", res.payload.token);
+        setModal(false);
+      } else {
+        alert(res.message);
+      }
+    } catch (error) {
+      console.error(error.message);
+      alert("An error occurred. Please try again.");
+    }
+  };
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -15,7 +50,14 @@ const Login = () => {
   }, []);
   return (
     <div className='fixed left-0 top-0 right-0 bottom-0 z-10 backdrop-blur-sm bg-black/30 flex justify-center items-center'>
-      <form className='relative bg-white p-10 rounded-xl text-slate-500'>
+      <motion.form
+        onSubmit={handleGetStarted}
+        className='relative bg-white p-10 rounded-xl text-slate-500'
+        initial={{ opacity: 0.2, y: 50 }}
+        transition={{ duration: 0.5 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
         <h1 className='text-center text-2xl text-neutral-700 font-medium'>
           {state}
         </h1>
@@ -24,16 +66,34 @@ const Login = () => {
         {state !== "Login" && (
           <div className='border px-6 py-2 flex items-center gap-2 rounded-full mt-5 '>
             <img width={29} src={assets.profile_icon} alt='profile icon' />
-            <input type='text' placeholder='Full name' required />
+            <input
+              onChange={(e) => setData({ ...data, name: e.target.value })}
+              value={data.name}
+              type='text'
+              placeholder='Full name'
+              required
+            />
           </div>
         )}
         <div className='border px-6 py-2 flex items-center gap-2 rounded-full mt-4 '>
           <img src={assets.email_icon} alt='profile icon' />
-          <input type='email' placeholder='Email Id' required />
+          <input
+            onChange={(e) => setData({ ...data, email: e.target.value })}
+            value={data.email}
+            type='email'
+            placeholder='Email Id'
+            required
+          />
         </div>
         <div className='border px-6 py-2 flex items-center gap-2 rounded-full mt-4 '>
           <img src={assets.lock_icon} alt='profile icon' />
-          <input type='text' placeholder='Password' required />
+          <input
+            onChange={(e) => setData({ ...data, password: e.target.value })}
+            value={data.password}
+            type='password'
+            placeholder='Password'
+            required
+          />
         </div>
         <p className='text-sm text-blue-600 my-4 cursor-pointer'>
           Forgot password?
@@ -71,7 +131,7 @@ const Login = () => {
           src={assets.cross_icon}
           alt='cors icon'
         />
-      </form>
+      </motion.form>
     </div>
   );
 };

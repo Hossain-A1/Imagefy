@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import axios from "axios";
 import { motion } from "motion/react";
 import { assets } from "../assets/assets";
+import { AppContext } from "../context/AppContext";
 
 const Result = () => {
+  const { generateImage } = useContext(AppContext);
   const [image, setImage] = useState(assets.sample_img_1);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [loadig, setLoading] = useState(false);
   const [value, setValue] = useState("");
 
-  const handleGenImage = async () => {
-    try {
-    } catch (error) {}
+  const handleGenImage = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if (value) {
+      const image = await generateImage(value);
+
+      if (image) {
+        setIsImageLoaded(true);
+        setLoading(false);
+        setImage(image);
+      }
+    }
   };
 
   return (
@@ -26,7 +38,7 @@ const Result = () => {
         <div className='relative'>
           <img
             className='max-w-sm rounded'
-            src={assets.sample_img_1}
+            src={image ? image : assets.sample_img_1}
             alt='result i,age'
           />
 
