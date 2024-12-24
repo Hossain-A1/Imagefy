@@ -11,7 +11,7 @@ export const handleGenerateImage = async (req, res, next) => {
     const user = await userModel.findById(id);
 
     if (!user || !prompt) {
-      return errorResponse(res, { statusCode: 404, message: "mising details" });
+      return errorResponse(res, { statusCode: 404, message: "missing details" });
     }
 
     if (user.creditBalance === 0 || user.creditBalance < 0) {
